@@ -1,32 +1,41 @@
-import React, {useState} from "react";
+import React, { useReducer } from "react";
 import "./App.css";
-function App () {
-   const [number, setNumber] = useState(0);
-  //  const [array, setArray] = useState(["student1 ", "student2 ", ])
-  
-   const addItem=()=> {
-    setNumber((prev)=> prev+ 1);
-}
- 
-   const minusItem=()=> {
-    // if (number !== 0)
-    setNumber ((prev)=>  prev -1);
-    if(number === 0){
-      setNumber(0)
-    }
+
+function reducer(number, action) {
+  switch (action.type) {
+    case "addItem":
+      return { count: number.count + 1 }
+    case "minusItem":
+      return { count: number.count - 1 }
+      default:
+        return number
   }
-   
-  return(
+}
+
+function App() {
+  const [number, dispatch] = useReducer(reducer, { count: 0 })
+
+
+  const addItem = () => {
+    dispatch({ type: 'addItem' })
+  }
+
+  const minusItem = () => {
+    if (number.count !== 0)
+    dispatch({ type: 'minusItem' })
+  }
+
+  return (
     <div className="main">
-  <div className="app"> 
-  <div className="number">
-    <div className="initial"> {number}</div>
-    <div className="adder">
-      <button className="button1" onClick={addItem}>+</button>
-      {/* <button className="button2" onClick={minusItem}>-</button> */}
-    </div>
-  </div>
-  </div>
+      <div className="app">
+        <div className="number">
+          <div className="initial"> {number.count}</div>
+          <div className="adder">
+            <button className="button1" onClick={addItem}>+</button>
+            <button className="button2" onClick={minusItem}>-</button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
